@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/signIn/signIn"
+  ],
+  "window": {
+    "navigationBarTitleText": "考勤",
+    "navigationBarBackgroundColor": "#f3514f",
+    "enablePullDownRefresh": true,
+    "backgroundColor": "#efefef",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "text": "签到",
+        "pagePath": "pages/index/index",
+        "iconPath": "/assets/Trips.png"
+      },
+      {
+        "text": "测试",
+        "pagePath": "pages/signIn/signIn",
+        "iconPath": "/assets/Trips.png"
+      },
+      {
+        "text": "个人",
+        "pagePath": "pages/my/my",
+        "iconPath": "/assets/my.png"
+      }
+
+    ]
+  },
+  "style": "v2",
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
