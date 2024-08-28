@@ -1,51 +1,63 @@
 Page({
   data: {
-    userInfo: {
-      nickName: '',
-      name: '',
-      idNumber: '',
-      age: '',
-      college: '',
-      major: '',
-      avatarUrl: ''
-    },
-    experience: 500, // 假设经验值为500  
+    id: 1,
+    nickName: 'www',
+    name: '',
+    sex: '',
+    age: '',
+    phone: '',
+    studentId: '',
+    idNumber: '',
+    college: '',
+    major: '',
+    avatar: '',
+    experience: 0,
     level: 1
   },
-  fetchUserData: function () {  
-    wx.request({  
-      url: 'http://127.0.0.1:8080/', // 替换为实际的后端API地址  
+  // getUserId: function () {
+  //   this.setData({
+  //     id: app.globalData.id
+  //   });
+  // },
+  fetchUserData: function () {
+    const id = this.data.id;
+    wx.request({
+      url: `http://127.0.0.1:8080/user/user/${id}`,
       method: 'GET',
-      success: (res) => {  
-        if (res.statusCode === 200) {  
-          // 假设后端返回的数据结构如下：  
-          // {  
-          //   "userInfo": {...},  
-          //   "experience": 500  
-          // }  
-          const request = res.data.data;  
-          this.setData({  
-            userInfo: request.userInfo,  
-            experience: request.experience  
-          });  
-          this.updateLevel();  
-        } else {  
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const responseData = res.data.data;
+          this.setData({
+            nickName: responseData.nickName,
+            name: responseData.name,
+            sex: responseData.sex,
+            age: responseData.age,
+            phone: responseData.phone,
+            studentId: responseData.studentId,
+            idNumber: responseData.idNumber,
+            college: responseData.college,
+            major: responseData.major,
+            avatar: responseData.avatar,
+            experience: responseData.experience
+          });
+          this.updateLevel();
+        } else {
           // 处理错误情况  
-          wx.showToast({  
-            title: '数据加载失败',  
-            icon: 'none'  
-          });  
-        }  
-      },  
-      fail: () => {  
+          wx.showToast({
+            title: '数据加载失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: () => {
         // 处理网络请求失败的情况  
-        wx.showToast({  
-          title: '网络请求失败',  
-          icon: 'none'  
-        });  
-      }  
-    });  
-  },  
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
   onLoad: function () {
     this.updateLevel();
     this.fetchUserData();

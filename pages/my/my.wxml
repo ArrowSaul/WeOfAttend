@@ -1,22 +1,22 @@
-<view class="container">  
-  <view class="userinfo">  
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>  
-    <text>昵称：</text><text class="userinfo-nickname">{{userInfo.nickName}}</text>  
-    <text>姓名：</text><text class="userinfo-nickname">{{userInfo.name}}</text>  
-    <text>身份证号：</text><text class="userinfo-nickname">{{userInfo.idNumber}}</text>  
-    <text>年龄：</text><text class="userinfo-nickname">{{userInfo.age}}</text>  
-    <text>学院：</text><text class="userinfo-nickname">{{userInfo.college}}</text>  
-    <text>专业：</text><text class="userinfo-nickname">{{userInfo.major}}</text>  
-    <button bindtap="editInfo">编辑信息</button>  
-  </view>  
-  <view class="user-info-section">  
-    <view class="user-info-item">  
-      <text class="label">经验值:</text>  
-      <progress percent="{{experiencePercent}}" show-info activeColor="blue" />  
-    </view>  
-    <view class="user-info-item">  
-      <text class="label">等级:</text>  
-      <text>{{level}}</text>  
-    </view>  
-  </view>  
+<view class="container">
+  <view class="userinfo">
+    <image class="userinfo-avatar" src="{{avatarUrl}}" mode="cover"></image>
+    <text>昵称：</text><text class="userinfo-nickname">{{nickName}}</text>
+    <text>姓名：</text><text class="userinfo-nickname">{{name}}</text>
+    <text>身份证号：</text><text class="userinfo-nickname">{{idNumber}}</text>
+    <text>年龄：</text><text class="userinfo-nickname">{{age}}</text>
+    <text>学院：</text><text class="userinfo-nickname">{{college}}</text>
+    <text>专业：</text><text class="userinfo-nickname">{{major}}</text>
+    <button bindtap="editInfo">编辑信息</button>
+  </view>
+  <view class="user-info-section">
+    <view class="user-info-item">
+      <text class="label">经验值:</text>
+      <progress percent="{{experiencePercent}}" show-info activeColor="blue" />
+    </view>
+    <view class="user-info-item">
+      <text class="label">等级:</text>
+      <text>{{level}}</text>
+    </view>
+  </view>
 </view>

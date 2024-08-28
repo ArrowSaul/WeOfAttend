@@ -1,9 +1,7 @@
 Page({  
   data: {  
-    userInfo: {  
       nickName: '',  
-      avatarUrl: ''  
-    }  
+      avatar: ''  
   },  
   
   onLoad: function(options) {  
