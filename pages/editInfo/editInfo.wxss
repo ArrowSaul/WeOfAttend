@@ -1,0 +1,22 @@
+.container {  
+  padding: 20px;  
+}  
+  
+.form-item {  
+  display: flex;  
+  flex-direction: row;  
+  align-items: center;  
+  margin-bottom: 15px;  
+}  
+  
+.label {  
+  width: 80px;  
+  margin-right: 10px;  
+}  
+  
+.avatar {  
+  width: 60px;  
+  height: 60px;  
+  border-radius: 50%;  
+  margin-right: 10px;  
+}
