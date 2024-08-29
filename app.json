@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/logo/logo",
+    "pages/register/register",
     "pages/index/index",
     "pages/my/my",
     "pages/editInfo/editInfo"

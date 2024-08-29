@@ -1,0 +1,73 @@
+.avatar-wrapper {
+  padding: 0;
+  width: 56px !important;
+  border-radius: 8px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background-color: #fff;
+}
+ 
+.avatar {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+ 
+.container {
+  display: flex;
+}
+.row{
+   border-bottom: 2px solid #ccc;
+   display: flex;
+   align-items: center;
+   height: 80rpx;
+   padding-left: 20rpx;
+}
+.text1{
+    flex: 2;
+    margin-left: 60rpx;
+}
+.weui-input{
+    flex: 8;
+}
+/* pages/index/index.wxss */  
+.modal {  
+  z-index: 9999;
+  position: fixed;  
+  top: 0;  
+  left: 0;  
+  right: 0;  
+  bottom: 0;  
+  background-color: rgba(0, 0, 0, 0.5);  
+  display: none; /* 默认隐藏 */  
+  align-items: center;  
+  justify-content: center;  
+}  
+  
+.modal.show {  
+  display: flex; /* 显示模态框 */  
+}  
+  
+.modal-content {  
+  background-color: #fff;  
+  padding: 20px;  
+  border-radius: 10px;
+  height: 45%;
+  width: 80%;
+  /* 其他样式，如宽度、高度等 */  
+}  
+  
+.modal-close {  
+  text-align: right;  
+  margin-top: 10px;  
+  cursor: pointer;  
+  margin-bottom: 10px;
+}
+.popup-content {  
+  width: 100%; /* 弹出框内容的宽度 */  
+  max-height: 82%; /* 弹出框内容的最大高度，超出时可以滑动 */  
+  background-color: #fff; /* 白色背景 */  
+  box-sizing: border-box; /* 包含padding和border在内计算宽度和高度 */  
+  overflow-y: auto; /* 超出内容区域时允许垂直滚动 */  
+}
+ 

@@ -1,14 +1,45 @@
-<view class="container">  
-  <form bindsubmit="formSubmit">  
-    <view class="form-item">  
-      <text class="label">昵称:</text>  
-      <input type="text" name="nickName" value="{{userInfo.nickName}}" placeholder="请输入昵称" />  
-    </view>  
-    <view class="form-item">  
-      <text class="label">头像:</text>  
-      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFit"></image>  
-      <button bindtap="chooseImage">选择图片</button>  
-    </view>  
-    <button formType="submit">保存</button>  
-  </form>  
+<view class="container">
+  <form bindsubmit="formSubmit">
+    <view class="form-item">
+      <text class="label">头像:</text>
+      <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFit"></image>
+    </view>
+    <view class="form-item">
+      <text class="label">昵称:</text>
+      <input type="text" name="nickName" value="{{userInfo.nickName}}" placeholder="请输入昵称" />
+    </view>
+    <view class="form-item">
+      <text class="label">姓名:</text>
+      <input type="text" name="name" value="{{userInfo.name}}" placeholder="请输入姓名" />
+    </view>
+    <view class="form-item">
+      <text class="label">性别:</text>
+      <input type="text" name="sex" value="{{userInfo.sex}}" placeholder="请输入性别" />
+    </view>
+    <view class="form-item">
+      <text class="label">年龄:</text>
+      <input type="text" name="age" value="{{userInfo.age}}" placeholder="请输入年龄" />
+    </view>
+    <view class="form-item">
+      <text class="label">手机号:</text>
+      <input type="text" name="phone" value="{{userInfo.phone}}" placeholder="请输入手机号" />
+    </view>
+    <view class="form-item">
+      <text class="label">学号:</text>
+      <input type="text" name="studentId" value="{{userInfo.studentId}}" placeholder="请输入学号" />
+    </view>
+    <view class="form-item">
+      <text class="label">身份证号:</text>
+      <input type="text" name="idNumber" value="{{userInfo.idNumber}}" placeholder="请输入身份证号" />
+    </view>
+    <view class="form-item">
+      <text class="label">学院:</text>
+      <input type="text" name="college" value="{{userInfo.college}}" placeholder="请输入学院" />
+    </view>
+    <view class="form-item">
+      <text class="label">专业:</text>
+      <input type="text" name="major" value="{{userInfo.major}}" placeholder="请输入专业" />
+    </view>
+    <button formType="submit" bindtap="formSubmit">保存</button>
+  </form>
 </view>

@@ -1,1 +1,10 @@
-<view>签到</view>
+<view>
+  <map id="myMap"
+    markers="{{markers}}"
+    style="width:100%;height:300px;"
+    longitude="{{poi.longitude}}"
+    latitude="{{poi.latitude}}" scale='16' show-location>
+</map>
+<view>当前位置为：{{markers[0].title}}</view>
+</view>
+

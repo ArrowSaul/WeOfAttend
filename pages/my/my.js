@@ -1,26 +1,30 @@
 Page({
   data: {
-    id: 1,
-    nickName: 'www',
-    name: '',
-    sex: '',
-    age: '',
-    phone: '',
-    studentId: '',
-    idNumber: '',
-    college: '',
-    major: '',
-    avatar: '',
-    experience: 0,
-    level: 1
+    userInfo: {
+      id: null,
+      nickName: '',
+      name: '',
+      sex: '',
+      age: '',
+      phone: '',
+      studentId: '',
+      idNumber: '',
+      college: '',
+      major: '',
+      avatar: '',
+      experience: null,
+      level: null,
+      experiencePercen:null
+    }
   },
-  // getUserId: function () {
-  //   this.setData({
-  //     id: app.globalData.id
-  //   });
-  // },
+  getUserInfo: function () {
+    const app = getApp();
+    this.setData({
+      userInfo: app.globalData.userInfo
+    });
+  },
   fetchUserData: function () {
-    const id = this.data.id;
+    const id = this.data.userInfo.id;
     wx.request({
       url: `http://127.0.0.1:8080/user/user/${id}`,
       method: 'GET',
@@ -28,17 +32,17 @@ Page({
         if (res.statusCode === 200) {
           const responseData = res.data.data;
           this.setData({
-            nickName: responseData.nickName,
-            name: responseData.name,
-            sex: responseData.sex,
-            age: responseData.age,
-            phone: responseData.phone,
-            studentId: responseData.studentId,
-            idNumber: responseData.idNumber,
-            college: responseData.college,
-            major: responseData.major,
-            avatar: responseData.avatar,
-            experience: responseData.experience
+            "userInfo.nickName": responseData.nickName,
+            "userInfo.name": responseData.name,
+            "userInfo.sex": responseData.sex,
+            "userInfo.age": responseData.age,
+            "userInfo.phone": responseData.phone,
+            "userInfo.studentId": responseData.studentId,
+            "userInfo.idNumber": responseData.idNumber,
+            "userInfo.college": responseData.college,
+            "userInfo.major": responseData.major,
+            "userInfo.avatar": responseData.avatar,
+            "userInfo.experience": responseData.experience
           });
           this.updateLevel();
         } else {
@@ -59,8 +63,9 @@ Page({
     });
   },
   onLoad: function () {
-    this.updateLevel();
+    this.getUserInfo();
     this.fetchUserData();
+    this.updateLevel();
   },
 
   editInfo: function () {
@@ -71,17 +76,24 @@ Page({
   },
 
   updateLevel: function () {
-    const experience = this.data.experience;
+    const experience = this.data.userInfo.experience;
     let level = 1;
-    let experiencePerLevel = 100; // 每级所需经验值  
-    while (experience >= experiencePerLevel) {
-      experience -= experiencePerLevel;
+    let experiencePerLevel = 100; // 初始每级所需经验值  
+    let remainingExperience = experience;
+  
+    while (remainingExperience >= experiencePerLevel) {
+      remainingExperience -= experiencePerLevel;
       level++;
-      experiencePerLevel *= 1.2; // 假设每级所需经验递增  
+      experiencePerLevel *= 1.2; // 每级所需经验递增
     }
+  
+    const experiencePercent = (remainingExperience / experiencePerLevel) * 100;
+    const roundedExperiencePercent = Math.round(experiencePercent);
+  
     this.setData({
-      level: level,
-      experiencePercent: experience / experiencePerLevel * 100
+      "userInfo.level": level,
+      "userInfo.experiencePercent": roundedExperiencePercent, // 存储经验百分比
+      "userInfo.experience": experience // 存储当前经验值
     });
   }
 });
