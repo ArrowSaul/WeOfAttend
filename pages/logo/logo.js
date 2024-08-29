@@ -1,18 +1,23 @@
+const app = getApp();
 Page({
   data: {
     isLoggedIn: false,
     url: '/images/maker.png',
     userInfo: {
+      code: '',
       avatar: '',
       nickName: '',
-      code: ''
+      id: 2,
+      token: '',
+      openid: '',
+      name: ''
     }
   },
-
+  // 加载方法
   onLoad: function () {
     this.checkLoginStatus();
   },
-
+  // 检查登录状态
   checkLoginStatus: function () {
     // 假设从本地存储中获取登录状态
     const token = wx.getStorageSync('userInfo.token');
@@ -30,7 +35,7 @@ Page({
       this.showLoginModal();
     }
   },
-
+  // 显示登录弹窗
   showLoginModal: function () {
     wx.showModal({
       title: '登录提示',
@@ -44,11 +49,11 @@ Page({
       }
     });
   },
-
+  // 获取微信授权码
   login: function () {
     wx.login({
       success: (res) => {
-        wx.setStorageSync('userInfo.code', res.code);
+        app.globalData.userInfo.code = res.code;
         this.setData({
             "userInfo.code": res.code
           }),
@@ -56,13 +61,13 @@ Page({
       },
     })
     wx.getUserProfile({
-      desc: '用于完善用户信息',
+      desc: '用于完善头像昵称',
       success: (res) => {
-        wx.setStorageSync('userInfo.avatar', res.userInfo.avatarUrl);
-        wx.setStorageSync('userInfo.nickName', res.userInfo.nickName);
+        app.globalData.userInfo.avatar =  res.userInfo.avatar;
+        app.globalData.userInfo.nickName =  res.userInfo.nickName;
         this.setData({
-          "userInfo.avatar": res.userInfo.avatarUrl,
-          "userInfo.nickName": res.userInfo.nickName
+            "userInfo.avatar": res.userInfo.avatarUrl,
+            "userInfo.nickName": res.userInfo.nickName
           }),
           console.log(res.userInfo)
         this.requestLogin(res.userInfo);
@@ -73,55 +78,36 @@ Page({
       }
     });
   },
-  fetchUserData: function () {
-    const openid = this.data.userInfo.openid;
-    wx.request({
-      url: `http://127.0.0.1:8080/user/user/${openid}`,
-      method: 'GET',
-      success: (res) => {
-        if (res.statusCode === 200) {
-          wx.switchTab({
-            url: '/pages/index/index'
-          });
-        } else {
-          wx.switchTab({
-            url: '/pages/register/register'
-          });
-        }
-      },
-      fail: () => {
-        // 处理网络请求失败的情况  
-        wx.showToast({
-          title: '网络请求失败',
-          icon: 'none'
-        });
-      }
-    });
-  },
-  requestLogin: function (userInfo) {
-    const token = ''; // 实际情况应该是服务器返回的token
-    wx.setStorageSync('userInfo.token', token);
-    this.setData({
-      isLoggedIn: true
-    });
-    // 发送更新请求  
+  // 登录方法提交code,nickName,avatar,获取id,openid,token
+  requestLogin: function (e) {
+    const userInfo = {
+      code: this.data.userInfo.code,
+      avatar: this.data.userInfo.avatar,
+      nickName: this.data.userInfo.nickName
+    }
     wx.request({
       url: 'http://127.0.0.1:8080/user/user/login',
       method: 'POST',
       data: userInfo,
       success: (res) => {
         if (res.statusCode === 200) {
-          // 更新成功，显示成功提示  
           wx.showToast({
             title: '登录成功',
             icon: 'success',
             duration: 2000
           });
-          // 更新全局变量中的用户信息  
-          const app = getApp();
-          app.globalData.userInfo = userInfo; // 假设 userInfo 是你更新后的用户信息
+          const responseData = res.data.data;
+          app.globalData.userInfo.id = responseData.id;
+          app.globalData.userInfo.token = responseData.token;
+          app.globalData.userInfo.openid = responseData.openid;
+          this.setData({
+            "userInfo.id": responseData.id,
+            "userInfo.token": responseData.token,
+            "userInfo.openid": responseData.openid,
+            isLoggedIn: true
+          });
+          this.getByName();
         } else {
-          // 更新失败，显示失败提示  
           wx.showToast({
             title: '登录失败',
             icon: 'none',
@@ -130,7 +116,6 @@ Page({
         }
       },
       fail: (error) => {
-        // 请求失败，显示网络错误提示并记录错误  
         console.error('更新用户信息失败:', error);
         wx.showToast({
           title: '网络错误',
@@ -139,10 +124,51 @@ Page({
         });
       }
     });
-    
-    // 登录成功后跳转到主页
-    wx.switchTab({
-      url: '/pages/index/index'
+  },
+  toRegister: function(){
+    wx.navigateTo({
+      url: '/pages/register/register'
+    });
+  },
+  //根据姓名是否填写查询用户是否注册
+  getByName: function () {
+    this.setData({
+      "userInfo.id": app.globalData.userInfo.id
+    });
+    const id = this.data.userInfo.id;
+    wx.request({
+      url: `http://127.0.0.1:8080/user/user/register/${id}`, 
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const responseData = res.data.data;
+          console.log(responseData);
+          if (responseData === null || responseData === '') {
+            // 如果 responseData 为 null 或空字符串，跳转到注册页面
+           this.toRegister();
+          } else {
+            // 如果 responseData 不为 null，跳转到主页
+            wx.switchTab({
+              url: '/pages/index/index'
+            });
+          }
+        } else {
+          // 处理服务器响应码不是200的情况
+          wx.showToast({
+            title: '服务器响应错误',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: (error) => {
+        // 网络请求失败的处理
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }
     });
   }
 });

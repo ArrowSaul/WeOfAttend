@@ -10,9 +10,8 @@
     <!-- 性别输入区域 -->
     <view class="row">
       <view class="text1">性别：</view>
-      <input type="text" class="weui-input" name="sex" placeholder="请输入性别" bindblur="validateage" />
+      <input type="text" class="weui-input" name="sex" placeholder="请输入性别"  />
     </view>
-    <view wx:if="{{sexError}}" style="color: red;flex: 3;text-align: center;">{{ageError}}</view>
     <!-- 年龄输入区域 -->
     <view class="row">
       <view class="text1">年龄：</view>
@@ -28,29 +27,24 @@
     <!-- 学号输入区域 -->
     <view class="row">
       <view class="text1">学号：</view>
-      <input type="text" class="weui-input" name="studentId" placeholder="请输入学号" bindblur="validatePhoneNumber" />
+      <input type="text" class="weui-input" name="studentId" placeholder="请输入学号"  />
     </view>
-    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
-
     <!-- 身份证号输入区域 -->
     <view class="row">
       <view class="text1">身份证：</view>
       <input type="text" class="weui-input" name="idNumber" placeholder="请输入身份证号码" bindblur="validateidNumber" />
     </view>
     <view wx:if="{{ idNumberError }}" style="color: red;flex: 3;text-align: center;">{{ idNumberError }}</view>
-
     <!-- 学院输入区域 -->
     <view class="row">
       <view class="text1">学院：</view>
-      <input type="text" class="weui-input" name="college" placeholder="请输入学院" bindblur="validatePhoneNumber" />
+      <input type="text" class="weui-input" name="college" placeholder="请输入学院" />
     </view>
-    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
     <!-- 专业输入区域 -->
     <view class="row">
       <view class="text1">专业：</view>
-      <input type="text" class="weui-input" name="major" placeholder="请输入专业" bindblur="validatePhoneNumber" />
+      <input type="text" class="weui-input" name="major" placeholder="请输入专业"  />
     </view>
-    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
     <!-- 隐私协议勾选区域 -->
     <view style="margin-top: 60rpx;">
       <checkbox-group style="margin-left: 220rpx;" name="agreement">
@@ -85,6 +79,6 @@
       </view>
       <!-- 表单提交区域 -->
     </view>
-    <button style="background-color: #54d319; color: #ffffff;margin-top: 40rpx;margin-bottom: 20rpx;" form-type="submit" >注册</button>
+    <button style="background-color: #54d319; color: #ffffff;margin-top: 40rpx;margin-bottom: 20rpx;" form-type="submit">注册</button>
   </form>
 </view>

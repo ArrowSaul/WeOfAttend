@@ -1,10 +1,8 @@
-const app = getApp()
-var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
-var qqmapsdk;
+const app = getApp();
 Page({
   data: {
     theme: wx.getSystemInfoSync().theme,
-    id: '',
+    id: 0,
     openid: '',
     name: '',
     sex: '',
@@ -14,16 +12,24 @@ Page({
     idNumber: '',
     college: '',
     major: '',
-    nameError: null,
-    sexError: null,
-    ageError: null,
-    studentIdError: null,
-    phoneError: null,
-    idNumberError: null,
+    nameError: '',
+    sexError: '',
+    ageError: '',
+    phoneError: '',
+    studentIdError: '',
+    idNumberError: '',
+    collegeError: '',
+    majorError:'',
     isAgreed: false,
     isModalVisible: false,
   },
-  // 隐藏隐私协议模态框  
+  // 显示隐私协议模态框
+  showPrivacyAgreement: function () {
+    this.setData({
+      isModalVisible: true,
+    });
+  },
+  // 隐藏隐私协议模态框
   hidePrivacyAgreement: function () {
     this.setData({
       isModalVisible: false,
@@ -31,11 +37,8 @@ Page({
   },
   //  表单提交
   formSubmit(e) {
-    console.log(e.detail.value.agreement[0])
     const result = e.detail.value.agreement[0] === 'agree';
-    console.log(result)
     this.setData({
-      nickName: e.detail.value.nickName,
       name: e.detail.value.name,
       sex: e.detail.value.sex,
       age: e.detail.value.age,
@@ -46,18 +49,25 @@ Page({
       major: e.detail.value.major,
       isAgreed: result
     })
-    if (this.data.nickName !== '' && this.data.phone !== '' && this.data.name !== '' && this.data.idNumber !== '' && this.data.age !== '' && this.data.college !== '' && this.data.major !== '') {
-      if (this.data.nickNameError === '' && this.data.phoneError === '' && this.data.nameError === '' && this.data.idNumberError === '' && this.data.ageError === '' && this.data.collegeError === '' && this.data.majorError === '') { // 判断用户输入信息是否有问题
-        if (this.data.isAgreed === false) { // 判断是否勾选了隐私协议
+    if (this.data.name !== '' && this.data.sex !== '' && this.data.age !== '' && 
+    this.data.phone !== '' &&  this.data.studentId !== '' && this.data.idNumber !== '' &&  this.data.college !== '' && this.data.major !== '') 
+    {
+      if (this.data.nameError === '' && this.data.sexError === '' && this.data.ageError === '' &&this.data.phoneError === '' &&this.data.studentIdError === '' &&  this.data.idNumberError === '' &&  this.data.collegeError === '' && this.data.majorError === '') 
+      { // 判断用户输入信息是否有问题
+        if (this.data.isAgreed === false) 
+        { // 判断是否勾选了隐私协议
           wx.showToast({
             title: '请勾选隐私协议',
             icon: "error",
             duration: 2000
           })
         } else {
+          this.setData({
+            id: app.globalData.userInfo.id
+          });
+          // const id = this.data.id;
           const message = { // 需要向后端传入的信息
             id: this.data.id,
-            openid: this.data.openid,
             name: this.data.name,
             sex: this.data.sex,
             age: this.data.age,
@@ -67,13 +77,39 @@ Page({
             college: this.data.college,
             major: this.data.major,
           }
-          wx.showToast({
-            title: '注册成功',
-            icon: "success",
-            duration: 2000
-          })
-          wx.navigateTo({
-            url: '/pages/index/index'
+          // 发送注册请求到服务器
+          wx.request({
+            url: 'http://127.0.0.1:8080/user/user/register',
+            method: 'PUT',
+            data: message, 
+            success: (res) => {
+              if (res.statusCode === 200) {
+                wx.showToast({
+                  title: '注册成功',
+                  icon: "success",
+                  duration: 2000
+                })
+                // 注册成功的处理
+                wx.switchTab({
+                  url: '/pages/index/index'
+                });
+              } else {
+                // 注册失败的处理
+                wx.showToast({
+                  title: '注册失败：' + res.data.message,
+                  icon: 'error',
+                  duration: 2000
+                });
+              }
+            },
+            fail: () => {
+              // 网络请求失败的处理
+              wx.showToast({
+                title: '网络请求失败',
+                icon: 'error',
+                duration: 2000
+              });
+            }
           });
         }
       } else {
@@ -83,15 +119,15 @@ Page({
           duration: 2000
         })
       }
-    } else {
-      wx.showToast({
-        title: '请检查信息是否完善',
-        icon: 'error',
-        duration: 2000
-      })
     }
+    //  else {
+    //   wx.showToast({
+    //     title: '请检查信息是否完善',
+    //     icon: 'error',
+    //     duration: 2000
+    //   })
+    // }
   },
-
   // 姓名验证
   validatename(e) {
     const name = e.detail.value
@@ -264,8 +300,8 @@ Page({
       }
     }
   },
-
-  onLoad(options) { //监听系统主题变化
+  //监听系统主题变化
+  onLoad(options) {
     wx.onThemeChange((result) => {
       this.setData({
         theme: result.theme

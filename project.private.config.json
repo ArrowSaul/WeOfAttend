@@ -5,7 +5,7 @@
       "list": [
         {
           "name": "pages/register/register",
-          "pathName": "pages/register/register",
+          "pathName": "pages/editInfo/editInfo",
           "query": "",
           "launchMode": "default",
           "scene": null

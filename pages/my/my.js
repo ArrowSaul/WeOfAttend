@@ -14,15 +14,17 @@ Page({
       avatar: '',
       experience: null,
       level: null,
-      experiencePercen:null
+      experiencePercen: null
     }
   },
+  // 从状态变量获取id信息
   getUserInfo: function () {
     const app = getApp();
     this.setData({
       userInfo: app.globalData.userInfo
     });
   },
+  // 查询个人信息方法
   fetchUserData: function () {
     const id = this.data.userInfo.id;
     wx.request({
@@ -46,7 +48,6 @@ Page({
           });
           this.updateLevel();
         } else {
-          // 处理错误情况  
           wx.showToast({
             title: '数据加载失败',
             icon: 'none'
@@ -54,7 +55,6 @@ Page({
         }
       },
       fail: () => {
-        // 处理网络请求失败的情况  
         wx.showToast({
           title: '网络请求失败',
           icon: 'none'
@@ -62,34 +62,31 @@ Page({
       }
     });
   },
+  // 加载方法
   onLoad: function () {
     this.getUserInfo();
     this.fetchUserData();
     this.updateLevel();
   },
-
-  editInfo: function () {
-    // 编辑信息的逻辑，通常跳转到另一个页面进行编辑  
+  // 跳转到编辑个人信息页面
+  editInfo: function () { 
     wx.navigateTo({
       url: '/pages/editInfo/editInfo'
     });
   },
-
+  //更新等级经验
   updateLevel: function () {
     const experience = this.data.userInfo.experience;
     let level = 1;
     let experiencePerLevel = 100; // 初始每级所需经验值  
     let remainingExperience = experience;
-  
     while (remainingExperience >= experiencePerLevel) {
       remainingExperience -= experiencePerLevel;
       level++;
       experiencePerLevel *= 1.2; // 每级所需经验递增
     }
-  
     const experiencePercent = (remainingExperience / experiencePerLevel) * 100;
     const roundedExperiencePercent = Math.round(experiencePercent);
-  
     this.setData({
       "userInfo.level": level,
       "userInfo.experiencePercent": roundedExperiencePercent, // 存储经验百分比

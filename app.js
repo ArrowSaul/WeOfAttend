@@ -2,7 +2,7 @@
 App({  
   globalData: {  
     userInfo: {
-      id: 1,
+      id: 0,
       nickName: '',
       name: '',
       sex: '',
