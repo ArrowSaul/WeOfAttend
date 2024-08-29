@@ -1,68 +1,70 @@
 <view data-weui-theme="{{theme}}">
-  <!-- 点击上传头像区域 -->
-  <button class="avatar-wrapper" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-    <image class="avatar" src="{{avatar}}"></image>
-  </button> 
   <!-- 表单区域 -->
   <form catchsubmit="formSubmit">
-    <!-- 点击获取微信昵称 或者 自己输入 -->
-    <view class="row" style="border-top:2px solid #ccc;">
-      <view class="text1">昵称：</view>
-        <input type="nickname" class="weui-input" name="nickName" placeholder="请输入昵称" bindblur="validateNickname"/>
-    </view>
-    <view wx:if="{{ nickNameError }}" style="color: red;flex: 3;text-align: center;">{{ nickNameError }}</view>
-    <!-- 手机号输入区域 -->
-    <view class="row">
-      <view class="text1">手机号：</view>
-        <input type="text" class="weui-input" name="phone" placeholder="请输入手机号" bindblur="validatePhoneNumber"/>
-    </view>
-    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
     <!-- 姓名输入区域 -->
     <view class="row">
       <view class="text1">姓名：</view>
-        <input type="text" class="weui-input" name="name" placeholder="请输入真实姓名" bindblur="validatename"/>
+      <input type="text" class="weui-input" name="name" placeholder="请输入真实姓名" bindblur="validatename" />
     </view>
     <view wx:if="{{ nameError }}" style="color: red;flex: 3;text-align: center;">{{ nameError }}</view>
-    <!-- 身份证号输入区域 -->
+    <!-- 性别输入区域 -->
     <view class="row">
-      <view class="text1">身份证：</view>
-        <input type="text" class="weui-input" name="peopleid" placeholder="请输入身份证号码" bindblur="validatepeopleid"/>
+      <view class="text1">性别：</view>
+      <input type="text" class="weui-input" name="sex" placeholder="请输入性别" bindblur="validateage" />
     </view>
-    <view wx:if="{{ peopleidError }}" style="color: red;flex: 3;text-align: center;">{{ peopleidError }}</view>
+    <view wx:if="{{sexError}}" style="color: red;flex: 3;text-align: center;">{{ageError}}</view>
     <!-- 年龄输入区域 -->
     <view class="row">
       <view class="text1">年龄：</view>
-        <input type="number" class="weui-input" name="age" placeholder="请输入年龄" bindblur="validateage"/>
+      <input type="text" class="weui-input" name="age" placeholder="请输入年龄" bindblur="validateage" />
     </view>
     <view wx:if="{{ageError}}" style="color: red;flex: 3;text-align: center;">{{ageError}}</view>
-    <!-- 学院选择区域 -->
+    <!-- 手机号输入区域 -->
     <view class="row">
-      <picker mode="selector" range="{{colleges}}" bindchange="handleCollegeChange" value="{{collegeIndex}}" range-key="name">  
-        <view style="margin-left: 60rpx;" class="picker">选择学院：{{colleges[collegeIndex].name}}</view>  
-      </picker>
+      <view class="text1">手机号：</view>
+      <input type="text" class="weui-input" name="phone" placeholder="请输入手机号" bindblur="validatePhoneNumber" />
     </view>
-    <view wx:if="{{subject_one_Error}}" style="color: red;flex: 3;text-align: center;">{{subject_one_Error}}</view>
-    <!-- 专业选择区域 -->
+    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
+    <!-- 学号输入区域 -->
     <view class="row">
-      <picker mode="selector" range="{{majors}}" bindchange="handleMajorChange" value="{{majorIndex}}" range-key="name">  
-        <view style="margin-left: 60rpx;" class="picker">选择专业：{{majors[majorIndex].name}}</view>  
-      </picker>  
+      <view class="text1">学号：</view>
+      <input type="text" class="weui-input" name="studentId" placeholder="请输入学号" bindblur="validatePhoneNumber" />
     </view>
-    <view wx:if="{{subject_two_Error}}" style="color: red;flex: 3;text-align: center;">{{subject_two_Error}}</view>
+    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
+
+    <!-- 身份证号输入区域 -->
+    <view class="row">
+      <view class="text1">身份证：</view>
+      <input type="text" class="weui-input" name="idNumber" placeholder="请输入身份证号码" bindblur="validateidNumber" />
+    </view>
+    <view wx:if="{{ idNumberError }}" style="color: red;flex: 3;text-align: center;">{{ idNumberError }}</view>
+
+    <!-- 学院输入区域 -->
+    <view class="row">
+      <view class="text1">学院：</view>
+      <input type="text" class="weui-input" name="college" placeholder="请输入学院" bindblur="validatePhoneNumber" />
+    </view>
+    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
+    <!-- 专业输入区域 -->
+    <view class="row">
+      <view class="text1">专业：</view>
+      <input type="text" class="weui-input" name="major" placeholder="请输入专业" bindblur="validatePhoneNumber" />
+    </view>
+    <view wx:if="{{ phoneError }}" style="color: red;flex: 3;text-align: center;">{{phoneError}}</view>
     <!-- 隐私协议勾选区域 -->
     <view style="margin-top: 60rpx;">
-      <checkbox-group style="margin-left: 220rpx;" name="agreement">  
-        <label class="checkbox">  
-          <checkbox value="agree"/> 我已阅读并同意
-        </label>  
-      </checkbox-group> 
+      <checkbox-group style="margin-left: 220rpx;" name="agreement">
+        <label class="checkbox">
+          <checkbox value="agree" /> 我已阅读并同意
+        </label>
+      </checkbox-group>
     </view>
     <!-- 隐私协议查看区域 -->
-    <view bindtap="showPrivacyAgreement" style="margin-left: 250rpx;margin-top: 20px;" >点击查看隐私协议</view>
-    <view class="modal {{isModalVisible ? 'show' : ''}}">  
-    <view class="modal-content">  
-      <view style="border-bottom: 2px solid #ccc;text-align: center;padding-bottom: 5px;margin-bottom: 5px;">隐私协议</view>
-      <scroll-view class="popup-content" scroll-y="true">  
+    <view bindtap="showPrivacyAgreement" style="margin-left: 250rpx;margin-top: 20px;">点击查看隐私协议</view>
+    <view class="modal {{isModalVisible ? 'show' : ''}}">
+      <view class="modal-content">
+        <view style="border-bottom: 2px solid #ccc;text-align: center;padding-bottom: 5px;margin-bottom: 5px;">隐私协议</view>
+        <scroll-view class="popup-content" scroll-y="true">
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
@@ -78,11 +80,11 @@
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
           <text>这里是弹出框的内容，你可以添加很多内容来测试滑动效果...</text>
-      </scroll-view>
-      <view class="modal-close" bindtap="hidePrivacyAgreement">关闭</view>  
-    </view>  
-    <!-- 表单提交区域 -->
-  </view> 
-    <button style="background-color: #000000; color: #ffffff;margin-top: 40rpx;margin-bottom: 20rpx;" form-type="submit">注册</button>
+        </scroll-view>
+        <view class="modal-close" bindtap="hidePrivacyAgreement">关闭</view>
+      </view>
+      <!-- 表单提交区域 -->
+    </view>
+    <button style="background-color: #54d319; color: #ffffff;margin-top: 40rpx;margin-bottom: 20rpx;" form-type="submit" >注册</button>
   </form>
 </view>

@@ -1,34 +1,27 @@
 const app = getApp()
-const avatar = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var qqmapsdk;
-
 Page({
   data: {
-    avatar: avatar,
     theme: wx.getSystemInfoSync().theme,
-    nickName: '',
+    id: '',
+    openid: '',
     name: '',
-    phone: '',
-    idNumber: '',
+    sex: '',
     age: '',
+    phone: '',
+    studentId: '',
+    idNumber: '',
     college: '',
     major: '',
+    nameError: null,
+    sexError: null,
+    ageError: null,
+    studentIdError: null,
+    phoneError: null,
+    idNumberError: null,
     isAgreed: false,
     isModalVisible: false,
-    phoneError: null,
-    nickNameError: null,
-    nameError: null,
-    peopleidError: null,
-    ageError: null,
-    subject_one_Error: null,
-    subject_two_Error: null,
-  },
-  // 隐私协议模态框
-  showPrivacyAgreement: function () {
-    this.setData({
-      isModalVisible: true,
-    });
   },
   // 隐藏隐私协议模态框  
   hidePrivacyAgreement: function () {
@@ -42,16 +35,19 @@ Page({
     const result = e.detail.value.agreement[0] === 'agree';
     console.log(result)
     this.setData({
-      nickName: e.detail.value.nickname,
+      nickName: e.detail.value.nickName,
       name: e.detail.value.name,
-      phone: e.detail.value.phone,
+      sex: e.detail.value.sex,
       age: e.detail.value.age,
-      subject: e.detail.value.subject,
-      peopleid: e.detail.value.peopleid,
+      phone: e.detail.value.phone,
+      studentId: e.detail.value.studentId,
+      idNumber: e.detail.value.idNumber,
+      college: e.detail.value.college,
+      major: e.detail.value.major,
       isAgreed: result
     })
-    if (this.data.nickName !== '' && this.data.phone !== '' && this.data.name !== '' && this.data.peopleid !== '' && this.data.age !== '' && this.data.subject_one !== '' && this.data.subject_two !== '' && this.data.avatarUrl !== defaultAvatarUrl) { // 判断输入的信息是否为空 初始值所有都为空 如果直接点提交可以提交通过 所以加入这个判断
-      if (this.data.nickNameError === '' && this.data.phoneError === '' && this.data.nameError === '' && this.data.peopleidError === '' && this.data.ageError === '' && this.data.subject_two_Error === '' && this.data.subject_one_Error === '') { // 判断用户输入信息是否有问题
+    if (this.data.nickName !== '' && this.data.phone !== '' && this.data.name !== '' && this.data.idNumber !== '' && this.data.age !== '' && this.data.college !== '' && this.data.major !== '') {
+      if (this.data.nickNameError === '' && this.data.phoneError === '' && this.data.nameError === '' && this.data.idNumberError === '' && this.data.ageError === '' && this.data.collegeError === '' && this.data.majorError === '') { // 判断用户输入信息是否有问题
         if (this.data.isAgreed === false) { // 判断是否勾选了隐私协议
           wx.showToast({
             title: '请勾选隐私协议',
@@ -60,12 +56,16 @@ Page({
           })
         } else {
           const message = { // 需要向后端传入的信息
-            avatar: this.data.avatar,
-            nickname: this.data.nickName,
-            phone: this.data.phone,
+            id: this.data.id,
+            openid: this.data.openid,
             name: this.data.name,
-            idNumber: this.data.idNumber,
+            sex: this.data.sex,
             age: this.data.age,
+            phone: this.data.phone,
+            studentId: this.data.studentId,
+            idNumber: this.data.idNumber,
+            college: this.data.college,
+            major: this.data.major,
           }
           wx.showToast({
             title: '注册成功',
@@ -73,7 +73,7 @@ Page({
             duration: 2000
           })
           wx.navigateTo({
-            url: '/pages/dingwei/dingwei'
+            url: '/pages/index/index'
           });
         }
       } else {
@@ -91,25 +91,7 @@ Page({
       })
     }
   },
-  //  进行手机号校验
-  validatePhoneNumber(e) {
-    const reg = /^(1[3-9])\d{9}$/; //正则表达式检验手机号
-    const phone = e.detail.value;
-    const result = reg.test(phone)
-    if (phone === '') {
-      this.setData({
-        phoneError: '手机号不能为空'
-      });
-    } else if (phone !== '' && result === false) {
-      this.setData({
-        phoneError: '请输入正确的手机号'
-      });
-    } else if (phone !== '' && result === true) {
-      this.setData({
-        phoneError: '' // 如果没问题错误信息为空
-      });
-    }
-  },
+
   // 姓名验证
   validatename(e) {
     const name = e.detail.value
@@ -132,6 +114,47 @@ Page({
       }
     }
   },
+  // 性别校验
+  // 年龄校验 （16-40）之间允许
+  validateage(e) {
+    var regex = /^(1[6-9]|[2-3][0-9]|40)$/;
+    const result = regex.test(e.detail.value)
+    if (e.detail.value === '') {
+      this.setData({
+        ageError: '年龄不能为空'
+      })
+    } else {
+      if (result === false) {
+        this.setData({
+          ageError: '请输入合法年龄'
+        })
+      } else {
+        this.setData({
+          ageError: ''
+        })
+      }
+    }
+  },
+  // 进行手机号校验
+  validatePhoneNumber(e) {
+    const reg = /^(1[3-9])\d{9}$/; //正则表达式检验手机号
+    const phone = e.detail.value;
+    const result = reg.test(phone)
+    if (phone === '') {
+      this.setData({
+        phoneError: '手机号不能为空'
+      });
+    } else if (phone !== '' && result === false) {
+      this.setData({
+        phoneError: '请输入正确的手机号'
+      });
+    } else if (phone !== '' && result === true) {
+      this.setData({
+        phoneError: '' // 如果没问题错误信息为空
+      });
+    }
+  },
+  // 进行学号校验
   // 身份证号校验 前两位校验 判断省份是否有效
   checkProv(val) {
     let pattern = /^[1-9][0-9]/;
@@ -210,7 +233,7 @@ Page({
     return false;
   },
   // 身份证校验（总）
-  Checkpeopleid(val) {
+  CheckidNumber(val) {
     if (this.checkCode(val)) {
       let date = val.substring(6, 14);
       if (this.checkDate(date)) {
@@ -221,45 +244,27 @@ Page({
     }
     return false;
   },
-  validatepeopleid(e) {
+  // 身份证校验（次）
+  validateidNumber(e) {
     const val = e.detail.value
-    const result = this.Checkpeopleid(val)
+    const result = this.CheckidNumber(val)
     if (val.length !== 18) {
       this.setData({
-        peopleidError: "身份证号码长度错误"
+        idNumberError: "身份证号码长度错误"
       })
     } else if (val.length === 18) {
       if (result === false) {
         this.setData({
-          peopleidError: "身份证号码不合法"
+          idNumberError: "身份证号码不合法"
         })
       } else {
         this.setData({
-          peopleidError: ""
+          idNumberError: ""
         })
       }
     }
   },
-  //年龄校验 （16-40）之间允许
-  validateage(e) {
-    var regex = /^(1[6-9]|[2-3][0-9]|40)$/;
-    const result = regex.test(e.detail.value)
-    if (e.detail.value === '') {
-      this.setData({
-        ageError: '年龄不能为空'
-      })
-    } else {
-      if (result === false) {
-        this.setData({
-          ageError: '请输入合法年龄'
-        })
-      } else {
-        this.setData({
-          ageError: ''
-        })
-      }
-    }
-  },
+
   onLoad(options) { //监听系统主题变化
     wx.onThemeChange((result) => {
       this.setData({
